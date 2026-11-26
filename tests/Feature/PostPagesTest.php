@@ -44,6 +44,13 @@ it('returns 404 for an unknown post', function () {
     $this->get('/posts/999')->assertNotFound();
 });
 
+it('shows a tailored 404 for an unknown post', function () {
+    $this->get('/posts/999')
+        ->assertNotFound()
+        ->assertSee('Article introuvable')
+        ->assertDontSee('Page introuvable');
+});
+
 it('shows the create form', function () {
     $this->get(route('posts.create'))
         ->assertOk()
