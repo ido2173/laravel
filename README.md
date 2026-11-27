@@ -78,3 +78,13 @@ Les captures `screenshots/s11-connexion.png` et `screenshots/s11-interdit.png` r
 - `AdminAccessTest`, `PostVisibilityTest` et `UserRoleTest` couvrent ces règles.
 
 Les captures `screenshots/s12-admin-interdit.png` et `screenshots/s12-brouillons.png` restent à prendre dans le navigateur si elles sont requises pour le livrable.
+
+### Session 13 (tag `lab-07`)
+
+- Sanctum et les routes API Laravel sont installés.
+- `GET /api/posts` renvoie les articles publiés avec pagination, auteur et catégorie ; `GET /api/posts/{post}` renvoie un article publié.
+- Les brouillons et identifiants inconnus renvoient `404`. La pagination invalide renvoie une erreur JSON `422` en français.
+- `include[]=body` et `include[]=tags` ajoutent ces champs à la ressource uniquement lorsqu'ils sont demandés.
+- Les routes sont nommées `api.posts.index` et `api.posts.show`; `ApiReadTest` couvre les réponses et leurs erreurs.
+
+Les captures `screenshots/s13-api-liste.png` et `screenshots/s13-api-detail.png` restent à prendre si elles sont requises pour le livrable.
