@@ -94,3 +94,12 @@ Les captures `screenshots/s13-api-liste.png` et `screenshots/s13-api-detail.png`
 - `GET /api/categories` et `GET /api/categories/{category}` incluent le nombre d'articles publiés.
 - `GET /api/posts?category_id=…&tag_id=…` filtre les articles publiés ; les paramètres inconnus renvoient des erreurs JSON `422` en français.
 - `ApiReadTest` couvre les compteurs, filtres et erreurs de validation.
+
+### Session 14 — écriture API (tag `lab-08`)
+
+- `POST /api/login` échange les identifiants et un nom d'appareil contre un jeton Sanctum. Le jeton en clair n'est rendu qu'à sa création et son empreinte est enregistrée.
+- `POST /api/logout` révoque le jeton courant. La création, la modification et la suppression d'articles exigent `Authorization: Bearer <token>` et réutilisent les Form Requests et `PostPolicy`.
+- `ApiWriteTest` couvre les statuts `401`, `403`, `422`, l'émission/révocation des jetons et les changements en base.
+- La collection Postman v2.1 se trouve dans `postman/Mini-CMS API.postman_collection.json`. Sa variable `token` est vide ; le script de connexion la renseigne après une réponse réussie. Renseigner les variables `email`, `password` et `base_url` avant l'utilisation.
+
+Les captures `screenshots/s14-categories.png` et `screenshots/s14-ecriture-api.png` restent à prendre dans le navigateur/Postman si elles sont requises pour le livrable.
