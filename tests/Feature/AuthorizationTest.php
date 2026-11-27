@@ -52,7 +52,7 @@ it('lets an author edit their own post', function () {
 });
 
 it('forbids an author from editing another users post and hides its controls', function () {
-    $post = Post::factory()->create([
+    $post = Post::factory()->published()->create([
         'user_id' => User::factory()->create()->id,
     ]);
     $author = User::factory()->create();

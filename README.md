@@ -45,6 +45,8 @@
 | POST | `/connexion` | `login.store` | `Auth\LoginController@store` |
 | POST | `/deconnexion` | `logout` | `Auth\LoginController@destroy` |
 | GET | `/mes-articles` | `my-posts` | `PostController@myPosts` |
+| GET | `/admin/users/roles` | `admin.users.roles.index` | `Admin\UserRoleController@index` |
+| PATCH | `/admin/users/{user}/role` | `admin.users.roles.update` | `Admin\UserRoleController@update` |
 
 ## Données de démonstration
 
@@ -65,3 +67,14 @@ Les captures `screenshots/s10-validation.png` et `screenshots/s10-404.png` reste
 
 Les contrôles d'accès, l'authentification, les rôles et les articles personnels sont couverts par les tests Pest.
 Les captures `screenshots/s11-connexion.png` et `screenshots/s11-interdit.png` restent à prendre dans le navigateur si elles sont requises pour le livrable.
+
+### Session 12 (tag `lab-06b`)
+
+- Le middleware `admin` protège toutes les routes `/admin`.
+- Les Gates `manage-categories` et `manage-tags` et les Form Requests appliquent les droits d'administration.
+- La liste publique utilise `Post::visibleTo()` : les visiteurs voient les articles publiés, les auteurs leurs propres brouillons et les administrateurs tous les articles.
+- Les Policies autorisent la consultation des articles publiés et des brouillons propres, et protègent la création.
+- Le défi de gestion des rôles ajoute une page réservée aux administrateurs ; un administrateur ne peut pas modifier son propre rôle.
+- `AdminAccessTest`, `PostVisibilityTest` et `UserRoleTest` couvrent ces règles.
+
+Les captures `screenshots/s12-admin-interdit.png` et `screenshots/s12-brouillons.png` restent à prendre dans le navigateur si elles sont requises pour le livrable.

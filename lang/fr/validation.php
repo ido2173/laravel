@@ -7,6 +7,7 @@ return [
     'email' => 'Le champ :attribute doit être une adresse e-mail valide.',
     'exists' => 'La valeur sélectionnée pour le champ :attribute est invalide.',
     'integer' => 'Le champ :attribute doit être un nombre entier.',
+    'in' => 'La valeur sélectionnée pour le champ :attribute est invalide.',
     'max' => [
         'array' => 'Le champ :attribute ne doit pas contenir plus de :max éléments.',
         'file' => 'Le fichier :attribute ne doit pas dépasser :max kilo-octets.',
@@ -31,6 +32,7 @@ return [
         'is_published' => 'publication',
         'name' => 'nom',
         'password' => 'mot de passe',
+        'role' => 'rôle',
         'slug' => 'slug',
         'tags' => 'tags',
         'tags.*' => 'tag',
