@@ -1,9 +1,13 @@
-## État actuel (tag lab-05b)
+## État actuel (tag lab-06)
 
-- Back-office des catégories et des tags sous `/admin`, protégé par le middleware `writable`, avec Form Requests et messages flash.
-- Messages de validation en français (`lang/fr/validation.php`, `APP_LOCALE=fr`), avec des noms de champs lisibles et un message propre au slug des catégories et des tags.
-- Pages 404 et 503 affichées dans le layout du site ; les articles et catégories inconnus ont une page dédiée.
-- Tests Pest : `PostPagesTest`, `PostWriteTest`, `PostFeedbackTest`, `PostRelationsTest`, `PostTaxonomyTest`, `CategoryAdminTest`, `TagAdminTest` et `ErrorPagesTest`.
+- Inscription, connexion avec option « Se souvenir de moi » et déconnexion manuelles ; les mots de passe sont hachés et les sessions régénérées.
+- Les comptes ont le rôle `author` par défaut. Après `php artisan migrate:fresh --seed`, `test@example.com` (mot de passe `password`) est administrateur.
+- Les visiteurs lisent les articles ; les écritures et le back-office exigent une connexion. Chaque nouvel article est associé à son auteur.
+- Les auteurs gèrent leurs propres articles ; les administrateurs peuvent gérer tous les articles et les catégories.
+- Gate `manage-categories` et `PostPolicy` appliquent les droits dans les contrôleurs, Form Requests et vues.
+- La page « Mes articles » liste les articles et brouillons de l'utilisateur connecté.
+- Messages de validation en français (`lang/fr/validation.php`, `APP_LOCALE=fr`) et pages 404/503 personnalisées.
+- Tests Pest : `AuthTest`, `AuthorizationTest`, `PostPagesTest`, `PostWriteTest`, `PostFeedbackTest`, `PostRelationsTest`, `PostTaxonomyTest`, `CategoryAdminTest`, `TagAdminTest` et `ErrorPagesTest`.
 
 ## Routes disponibles
 
@@ -35,6 +39,12 @@
 | GET | `/admin/tags/{tag}/edit` | `admin.tags.edit` | `TagController@edit` |
 | PUT/PATCH | `/admin/tags/{tag}` | `admin.tags.update` | `TagController@update` |
 | DELETE | `/admin/tags/{tag}` | `admin.tags.destroy` | `TagController@destroy` |
+| GET | `/inscription` | `register` | `Auth\RegisterController@create` |
+| POST | `/inscription` | `register.store` | `Auth\RegisterController@store` |
+| GET | `/connexion` | `login` | `Auth\LoginController@create` |
+| POST | `/connexion` | `login.store` | `Auth\LoginController@store` |
+| POST | `/deconnexion` | `logout` | `Auth\LoginController@destroy` |
+| GET | `/mes-articles` | `my-posts` | `PostController@myPosts` |
 
 ## Données de démonstration
 
@@ -50,3 +60,8 @@ Après un clone, reconstruire la base avec `php artisan migrate:fresh --seed`. A
 
 Le back-office, les messages de validation en français et les pages d'erreur personnalisées sont couverts par les tests Pest.
 Les captures `screenshots/s10-validation.png` et `screenshots/s10-404.png` restent à prendre dans le navigateur si elles sont requises pour le livrable.
+
+### Session 11
+
+Les contrôles d'accès, l'authentification, les rôles et les articles personnels sont couverts par les tests Pest.
+Les captures `screenshots/s11-connexion.png` et `screenshots/s11-interdit.png` restent à prendre dans le navigateur si elles sont requises pour le livrable.
