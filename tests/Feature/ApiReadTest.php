@@ -71,3 +71,51 @@ it('includes tags only when requested', function () {
         ->assertOk()
         ->assertJsonPath('data.0.tags.0.slug', 'api');
 });
+
+it('returns category counts using published posts only', function () {
+    $category = Category::factory()->create(['name' => 'Tutoriels', 'slug' => 'tutoriels']);
+    Post::factory(2)->published()->create(['category_id' => $category->id]);
+    Post::factory()->create(['category_id' => $category->id]);
+    Category::factory()->create(['name' => 'Vide', 'slug' => 'vide']);
+
+    $this->getJson(route('api.categories.index'))
+        ->assertOk()
+        ->assertJsonPath('data.0.published_posts_count', 2)
+        ->assertJsonPath('data.1.published_posts_count', 0);
+
+    $this->getJson(route('api.categories.show', $category))
+        ->assertOk()
+        ->assertJsonPath('data.slug', 'tutoriels')
+        ->assertJsonPath('data.published_posts_count', 2);
+});
+
+it('filters published posts by category and tag', function () {
+    $category = Category::factory()->create();
+    $tag = Tag::factory()->create();
+    $matchingPost = Post::factory()->published()->create(['category_id' => $category->id]);
+    $matchingPost->tags()->attach($tag);
+    Post::factory()->published()->create();
+    Post::factory()->create(['category_id' => $category->id]);
+
+    $this->getJson(route('api.posts.index', ['category_id' => $category->id]))
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.id', $matchingPost->id);
+
+    $this->getJson(route('api.posts.index', ['tag_id' => $tag->id]))
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.id', $matchingPost->id);
+});
+
+it('returns French validation errors for unknown category and tag filters', function () {
+    $this->getJson(route('api.posts.index', ['category_id' => 999999]))
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['category_id'])
+        ->assertJsonPath('errors.category_id.0', 'La valeur sélectionnée pour le champ catégorie est invalide.');
+
+    $this->getJson(route('api.posts.index', ['tag_id' => 999999]))
+        ->assertUnprocessable()
+        ->assertJsonValidationErrors(['tag_id'])
+        ->assertJsonPath('errors.tag_id.0', 'La valeur sélectionnée pour le champ tag est invalide.');
+});

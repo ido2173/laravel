@@ -88,3 +88,9 @@ Les captures `screenshots/s12-admin-interdit.png` et `screenshots/s12-brouillons
 - Les routes sont nommées `api.posts.index` et `api.posts.show`; `ApiReadTest` couvre les réponses et leurs erreurs.
 
 Les captures `screenshots/s13-api-liste.png` et `screenshots/s13-api-detail.png` restent à prendre si elles sont requises pour le livrable.
+
+### Session 14 — lecture API (tag `lab-07b`)
+
+- `GET /api/categories` et `GET /api/categories/{category}` incluent le nombre d'articles publiés.
+- `GET /api/posts?category_id=…&tag_id=…` filtre les articles publiés ; les paramètres inconnus renvoient des erreurs JSON `422` en français.
+- `ApiReadTest` couvre les compteurs, filtres et erreurs de validation.

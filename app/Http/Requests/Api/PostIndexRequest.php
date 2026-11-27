@@ -16,6 +16,8 @@ class PostIndexRequest extends FormRequest
     {
         return [
             'per_page' => ['sometimes', 'integer', 'min:1', 'max:50'],
+            'category_id' => ['sometimes', 'integer', 'exists:categories,id'],
+            'tag_id' => ['sometimes', 'integer', 'exists:tags,id'],
             'include' => ['sometimes', 'array'],
             'include.*' => ['string', Rule::in(['body', 'tags'])],
         ];

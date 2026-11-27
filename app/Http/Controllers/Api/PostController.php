@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\PostIndexRequest;
 use App\Http\Resources\Api\PostResource;
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Validation\Rule;
@@ -16,6 +17,14 @@ class PostController extends Controller
     {
         $validated = $request->validated();
         $posts = Post::published()
+            ->when(isset($validated['category_id']), function (Builder $query) use ($validated): void {
+                $query->where('category_id', $validated['category_id']);
+            })
+            ->when(isset($validated['tag_id']), function (Builder $query) use ($validated): void {
+                $query->whereHas('tags', function (Builder $query) use ($validated): void {
+                    $query->whereKey($validated['tag_id']);
+                });
+            })
             ->with($this->relationsForIncludes($validated['include'] ?? []))
             ->latest('published_at')
             ->latest('id')
