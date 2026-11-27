@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 
 beforeEach(function () {
     $this->withoutVite();
@@ -36,7 +37,8 @@ it('shows the styled 503 page when the site is read-only', function () {
 
     $post = Post::factory()->create();
 
-    $this->delete(route('posts.destroy', $post))
+    $this->actingAs(User::factory()->create())
+        ->delete(route('posts.destroy', $post))
         ->assertStatus(503)
         ->assertSee('Service momentanément indisponible')
         ->assertSee('Le site est en lecture seule.');
